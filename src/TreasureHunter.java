@@ -114,6 +114,10 @@ public class TreasureHunter {
             System.out.print("What's your next move? ");
             choice = SCANNER.nextLine().toLowerCase();
             processChoice(choice);
+            if (hunter.isGoldNegative()) {
+                System.out.println("GAME OVER!");
+                break;
+            }
         }
     }
 

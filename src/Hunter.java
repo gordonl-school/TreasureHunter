@@ -19,7 +19,7 @@ public class Hunter {
      */
     public Hunter(String hunterName, int startingGold) {
         this.hunterName = hunterName;
-        kit = new String[6]; // only 5 possible items can be stored in kit
+        kit = new String[6]; // only 6 possible items can be stored in kit
         gold = startingGold;
         if (gold == 100) {
             addItem("water");
@@ -34,6 +34,10 @@ public class Hunter {
     //Accessors
     public String getHunterName() {
         return hunterName;
+    }
+
+    public boolean isGoldNegative() {
+        return goldNegative;
     }
 
     /**
@@ -200,6 +204,5 @@ public class Hunter {
         }
         return -1;
     }
-
 
 }
