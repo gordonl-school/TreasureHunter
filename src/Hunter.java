@@ -9,6 +9,7 @@ public class Hunter {
     private String hunterName;
     private String[] kit;
     private int gold;
+    private boolean goldNegative;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -43,7 +44,7 @@ public class Hunter {
     public void changeGold(int modifier) {
         gold += modifier;
         if (gold < 0) {
-            gold = 0;
+            goldNegative = true;
         }
     }
 
@@ -199,4 +200,6 @@ public class Hunter {
         }
         return -1;
     }
+
+
 }
