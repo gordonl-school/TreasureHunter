@@ -20,6 +20,14 @@ public class Hunter {
         this.hunterName = hunterName;
         kit = new String[5]; // only 5 possible items can be stored in kit
         gold = startingGold;
+        if (gold == 100) {
+            addItem("water");
+            addItem("rope");
+            addItem("machete");
+            addItem("horse");
+            addItem("boat");
+
+        }
     }
 
     //Accessors
