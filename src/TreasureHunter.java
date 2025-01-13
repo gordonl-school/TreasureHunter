@@ -53,6 +53,11 @@ public class TreasureHunter {
         if (hard.equals("y")) {
             hardMode = true;
         }
+        if (hard.equalsIgnoreCase("test")) {
+            hunter = new Hunter(name, 100);
+        } else {
+            hunter = new Hunter(name, 20);
+        }
     }
 
     /**
