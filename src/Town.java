@@ -91,6 +91,15 @@ public class Town {
      * The chances of finding a fight and winning the gold are based on the toughness of the town.<p>
      * The tougher the town, the easier it is to find a fight, and the harder it is to win one.
      */
+    public void huntForTreausre() {
+        if (!hunter.getIsSearched()) {
+            String gem = hunter.chooseTreasure();
+            hunter.addTreasure();
+        } else {
+            System.out.println("You have already searched this town.");
+        }
+
+    }
     public void lookForTrouble() {
         double noTroubleChance;
         if (toughTown) {

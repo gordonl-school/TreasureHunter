@@ -8,8 +8,10 @@ public class Hunter {
     //instance variables
     private String hunterName;
     private String[] kit;
+    private String[] treasureCollection;
     private int gold;
     private boolean goldNegative;
+    private boolean isSearched;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -20,6 +22,7 @@ public class Hunter {
     public Hunter(String hunterName, int startingGold) {
         this.hunterName = hunterName;
         kit = new String[7]; // only 7 possible items can be stored in kit
+        treasureCollection = new String[3]; // 3 possible items
         gold = startingGold;
         if (gold == 100) {
             addItem("water");
@@ -38,6 +41,16 @@ public class Hunter {
 
     public boolean isGoldNegative() {
         return goldNegative;
+    }
+
+
+    // Checks for treasure
+    public boolean getIsSearched() {
+        return isSearched;
+    }
+
+    public void setIsSearched(boolean newValue) {
+        isSearched = newValue;
     }
 
     /**
@@ -115,6 +128,7 @@ public class Hunter {
         return false;
     }
 
+
     /**
      * Checks if the kit Array has the specified item.
      *
@@ -123,6 +137,16 @@ public class Hunter {
      */
     public boolean hasItemInKit(String item) {
         for (String tmpItem : kit) {
+            if (item.equals(tmpItem)) {
+                // early return
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasItemInTreasure(String item) {
+        for (String tmpItem : treasureCollection) {
             if (item.equals(tmpItem)) {
                 // early return
                 return true;
@@ -158,6 +182,25 @@ public class Hunter {
             str += " and " + getInventory();
         }
         return str;
+    }
+
+    public String chooseTreasure() {
+        String[] gemList = {"Crown", "Trophy", "Gem", "Dust"};
+        return gemList[(int) (Math.random() * (4))];
+    }
+
+    public void addTreasure() {
+        String chosenGem = chooseTreasure();
+        isSearched = true;
+        if (!hasItemInTreasure(chosenGem)) {
+            System.out.println("You found a " + chosenGem + "!");
+            if (!chosenGem.equalsIgnoreCase("Dust")) {
+                int idx = emptyPositionTreasure();
+                treasureCollection[idx] = chosenGem;
+            }
+        } else if (hasItemInTreasure(chosenGem)){
+            System.out.println("You already have " + chosenGem + " in your collection so you don't collect it.");
+        }
     }
 
     /**
@@ -199,6 +242,14 @@ public class Hunter {
     private int emptyPositionInKit() {
         for (int i = 0; i < kit.length; i++) {
             if (kit[i] == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    private int emptyPositionTreasure() {
+        for (int i = 0; i < treasureCollection.length; i++) {
+            if (treasureCollection[i] == null) {
                 return i;
             }
         }

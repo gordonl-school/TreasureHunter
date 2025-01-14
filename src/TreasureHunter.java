@@ -108,6 +108,7 @@ public class TreasureHunter {
             System.out.println("(S)ell something at the shop.");
             System.out.println("(E)xplore surrounding terrain.");
             System.out.println("(M)ove on to a different town.");
+            System.out.println("(H)unt for treasure.");
             System.out.println("(L)ook for trouble!");
             System.out.println("(D)ig for gold.");
             System.out.println("Give up the hunt and e(X)it.");
@@ -136,7 +137,10 @@ public class TreasureHunter {
                 // This town is going away so print its news ahead of time.
                 System.out.println(currentTown.getLatestNews());
                 enterTown();
+                hunter.setIsSearched(false);
             }
+        } else if (choice.equals("h")) {
+            currentTown.huntForTreausre();
         } else if (choice.equals("l")) {
             currentTown.lookForTrouble();
         } else if (choice.equals("x")) {
