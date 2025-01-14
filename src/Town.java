@@ -93,7 +93,6 @@ public class Town {
      */
     public void huntForTreausre() {
         if (!hunter.getIsSearched()) {
-            String gem = hunter.chooseTreasure();
             hunter.addTreasure();
         } else {
             System.out.println("You have already searched this town.");

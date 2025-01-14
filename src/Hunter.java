@@ -12,6 +12,7 @@ public class Hunter {
     private int gold;
     private boolean goldNegative;
     private boolean isSearched;
+    private boolean foundTreasure;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -43,6 +44,9 @@ public class Hunter {
         return goldNegative;
     }
 
+    public boolean getIsFoundTreasure() {
+        return foundTreasure;
+    }
 
     // Checks for treasure
     public boolean getIsSearched() {
@@ -221,6 +225,9 @@ public class Hunter {
         } else if (hasItemInTreasure(chosenGem)){
             System.out.println("You already have " + chosenGem + " in your collection so you don't collect it.");
         }
+        if (itemsInTreasureList() == 3) {
+            foundTreasure = true;
+        }
     }
 
     /**
@@ -253,6 +260,16 @@ public class Hunter {
         }
         return true;
     }
+    private int itemsInTreasureList() {
+        int count = 0;
+        for (String string : treasureCollection) {
+            if (string != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     private boolean treasureIsEmpty() {
         for (String string : treasureCollection) {
             if (string != null) {

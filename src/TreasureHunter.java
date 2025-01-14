@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -120,6 +121,9 @@ public class TreasureHunter {
             if (hunter.isGoldNegative()) {
                 System.out.println("GAME OVER!");
                 break;
+            }
+            if (hunter.getIsFoundTreasure()) {
+                System.out.println("Congratulations, you have found the last of the three treasures, you win!");
             }
         }
     }
