@@ -12,6 +12,7 @@ public class Town {
     private String printMessage;
     private boolean toughTown;
     private boolean dug;
+    private TreasureHunter treasureHunter;
 
     /**
      * The Town Constructor takes in a shop and the surrounding terrain, but leaves the hunter as null until one arrives.
@@ -19,7 +20,7 @@ public class Town {
      * @param shop The town's shoppe.
      * @param toughness The surrounding terrain.
      */
-    public Town(Shop shop, double toughness) {
+    public Town(Shop shop, double toughness, TreasureHunter th) {
         this.shop = shop;
         this.terrain = getNewTerrain();
 
@@ -31,6 +32,8 @@ public class Town {
         // higher toughness = more likely to be a tough town
         toughTown = (Math.random() < toughness);
         dug = false;
+
+        treasureHunter = th;
     }
 
     public Terrain getTerrain() {
@@ -66,15 +69,17 @@ public class Town {
         if (canLeaveTown) {
             String item = terrain.getNeededItem();
             printMessage = "You used your " + item + " to cross the " + terrain.getTerrainName() + ".";
-            if (checkItemBreak()) {
-                hunter.removeItemFromKit(item);
-                printMessage += "\nUnfortunately, you lost your " + item;
+            if (treasureHunter.getCurrentMode() != treasureHunter.getEasyMode()) {
+                if (checkItemBreak()) {
+                    hunter.removeItemFromKit(item);
+                    printMessage += "\nUnfortunately, you lost your " + item;
+                }
             }
             return true;
+        } else {
+            printMessage = "You can't leave town, " + hunter.getHunterName() + ". You don't have a " + terrain.getNeededItem() + ".";
+            return false;
         }
-
-        printMessage = "You can't leave town, " + hunter.getHunterName() + ". You don't have a " + terrain.getNeededItem() + ".";
-        return false;
     }
 
     /**
@@ -130,7 +135,7 @@ public class Town {
             if (hunter.hasItemInKit("shovel")) {
                 int chance = (int) (Math.random() * 2) + 1;
                 if (chance == 1) {
-                    int amountReceived = (int) (Math.random() * 19) + 1;
+                    int amountReceived = (int) (Math.random() * 20) + 1;
                     hunter.changeGold(amountReceived);
                     printMessage = "You dug up " + amountReceived + " gold!\n";
                     dug = true;

@@ -20,6 +20,7 @@ public class TreasureHunter {
     private boolean hardMode;
     private boolean easyMode;
     private boolean normalMode;
+    private boolean currentMode;
 
     /**
      * Constructs the Treasure Hunter game.
@@ -32,6 +33,7 @@ public class TreasureHunter {
         easyMode = false;
         normalMode = false;
         samuraiMode = false;
+        currentMode = false;
     }
 
     public boolean getIsSamuraiMode() {
@@ -63,10 +65,13 @@ public class TreasureHunter {
         String hard = SCANNER.nextLine().toLowerCase();
         if (hard.equals("h")) {
             hardMode = true;
+            currentMode = hardMode;
         } else if (hard.equals("e")) {
             easyMode = true;
+            currentMode = easyMode;
         } else {
             normalMode = true;
+            currentMode = normalMode;
         }
         if (hard.equalsIgnoreCase("test")) {
             hunter = new Hunter(name, 100);
@@ -95,7 +100,7 @@ public class TreasureHunter {
             toughness = 0.75;
         } else if (easyMode) {
             markdown = 1;
-            toughness = 1;
+            toughness = 0.1;
         }
 
         // note that we don't need to access the Shop object
@@ -106,7 +111,7 @@ public class TreasureHunter {
         // creating the new Town -- which we need to store as an instance
         // variable in this class, since we need to access the Town
         // object in other methods of this class
-        currentTown = new Town(shop, toughness);
+        currentTown = new Town(shop, toughness, this);
 
         // calling the hunterArrives method, which takes the Hunter
         // as a parameter; note this also could have been done in the
@@ -180,5 +185,13 @@ public class TreasureHunter {
         } else {
             System.out.println("Yikes! That's an invalid option! Try again.");
         }
+    }
+
+    public boolean getCurrentMode() {
+        return currentMode;
+    }
+
+    public boolean getEasyMode() {
+        return easyMode;
     }
 }
