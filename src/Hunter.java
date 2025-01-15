@@ -29,11 +29,19 @@ public class Hunter {
             addItem("water");
             addItem("rope");
             addItem("machete");
+            addItem("shovel");
             addItem("boots");
             addItem("horse");
             addItem("boat");
         }
     }
+    public Hunter(String hunterName, int startingGold, boolean startingMode) {
+        this.hunterName = hunterName;
+        kit = new String[8]; // only 8 possible items can be stored in kit
+        treasureCollection = new String[3]; // 3 possible items
+        gold = startingGold;
+    }
+
 
     //Accessors
     public String getHunterName() {

@@ -15,6 +15,7 @@ public class Shop {
     private static final int BOOTS_COST = 10;
     private static final int HORSE_COST = 12;
     private static final int BOAT_COST = 20;
+    private static final int SWORD_COST = 0;
 
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -22,6 +23,7 @@ public class Shop {
     // instance variables
     private double markdown;
     private Hunter customer;
+    private TreasureHunter treasureHunter;
 
     /**
      * The Shop constructor takes in a markdown value and leaves customer null until one enters the shop.
@@ -29,6 +31,7 @@ public class Shop {
      * @param markdown Percentage of markdown for selling items in decimal format.
      */
     public Shop(double markdown) {
+        treasureHunter = new TreasureHunter();
         this.markdown = markdown;
         customer = null; // customer is set in the enter method
     }
@@ -90,6 +93,10 @@ public class Shop {
         str += "Boots: " + BOOTS_COST + " gold\n";
         str += "Horse: " + HORSE_COST + " gold\n";
         str += "Boat: " + BOAT_COST + " gold\n";
+        System.out.println(treasureHunter.getIsSamuraiMode());
+        if (treasureHunter.getIsSamuraiMode()) {
+            str += "Sword: " + SWORD_COST + " gold\n";
+        }
         return str;
     }
 

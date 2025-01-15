@@ -16,6 +16,7 @@ public class TreasureHunter {
     // instance variables
     private Town currentTown;
     private Hunter hunter;
+    private boolean samuraiMode;
     private boolean hardMode;
     private boolean easyMode;
     private boolean normalMode;
@@ -30,6 +31,11 @@ public class TreasureHunter {
         hardMode = false;
         easyMode = false;
         normalMode = false;
+        samuraiMode = false;
+    }
+
+    public boolean getIsSamuraiMode() {
+        return samuraiMode;
     }
 
     /**
@@ -64,8 +70,12 @@ public class TreasureHunter {
         }
         if (hard.equalsIgnoreCase("test")) {
             hunter = new Hunter(name, 100);
-        } else if (easyMode = true) {
+        } else if (easyMode) {
             hunter = new Hunter(name, 40);
+        } else if (hard.equalsIgnoreCase("s")){
+            samuraiMode = true;
+            System.out.println("Made samuraiMode " + samuraiMode);
+            hunter = new Hunter(name, 25, samuraiMode);
         } else {
             hunter = new Hunter(name, 20);
         }
@@ -75,11 +85,11 @@ public class TreasureHunter {
      * Creates a new town and adds the Hunter to it.
      */
     private void enterTown() {
-        double markdown = 0.25;
+        double markdown = 0.5;
         double toughness = 0.4;
         if (hardMode) {
             // in hard mode, you get less money back when you sell items
-            markdown = 0.5;
+            markdown = 0.25;
 
             // and the town is "tougher"
             toughness = 0.75;
@@ -129,6 +139,7 @@ public class TreasureHunter {
             System.out.println("Give up the hunt and e(X)it.");
             System.out.println();
             System.out.print("What's your next move? ");
+//            System.out.println("samuraiMode is currently " + samuraiMode);
             choice = SCANNER.nextLine().toLowerCase();
             processChoice(choice);
             if (hunter.isGoldNegative()) {
