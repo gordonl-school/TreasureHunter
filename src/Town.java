@@ -133,9 +133,9 @@ public class Town {
                 printMessage += "\nYou lost the brawl and pay " + Colors.YELLOW + goldDiff + " gold." + Colors.RESET;
                 hunter.changeGold(-goldDiff);
                 if (hunter.isGoldNegative()) {
+                    System.out.println(printMessage);
                     hasLost = true;
                     System.out.println("Game Over!");
-
                 }
             }
         }
