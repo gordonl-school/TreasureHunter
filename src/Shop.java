@@ -16,6 +16,7 @@ public class Shop {
     private static final int HORSE_COST = 12;
     private static final int BOAT_COST = 20;
     private static final int SWORD_COST = 0;
+    private final String[] itemsList;
 
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -30,10 +31,17 @@ public class Shop {
      *
      * @param markdown Percentage of markdown for selling items in decimal format.
      */
-    public Shop(double markdown) {
-        treasureHunter = new TreasureHunter();
+    public Shop(double markdown, TreasureHunter th) {
+        treasureHunter = th;
         this.markdown = markdown;
         customer = null; // customer is set in the enter method
+        if (treasureHunter.getIsSamuraiMode()) {
+            itemsList = new String[]{"water", "rope", "machete", "shovel", "boots", "horse", "boat", "sword"};
+        } else {
+            itemsList = new String[]{"water", "rope", "machete", "shovel", "boots", "horse", "boat"};
+
+        }
+
     }
 
     /**
@@ -43,6 +51,7 @@ public class Shop {
      * @param buyOrSell String that determines if hunter is "B"uying or "S"elling
      * @return a String to be used for printing in the latest news
      */
+
     public String enter(Hunter hunter, String buyOrSell) {
         customer = hunter;
         if (buyOrSell.equals("b")) {
@@ -52,7 +61,19 @@ public class Shop {
             System.out.print("What're you lookin' to buy? ");
             String item = SCANNER.nextLine().toLowerCase();
             int cost = checkMarketPrice(item, true);
-            if (cost == 0) {
+
+            if (treasureHunter.getIsSamuraiMode() & validItem(item)) {
+                if (hunter.getHasSword()) {
+                    System.out.println(Colors.GREEN + "The sword intimidates the shopkeeper and he gives you the item freely" + Colors.RESET);
+                    buyItem(item);
+                } else {
+                    System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
+                    String option = SCANNER.nextLine().toLowerCase();
+                    if (option.equals("y")) {
+                        buyItem(item);
+                    }
+                }
+            } else if (cost == 0 && !validItem(item)) {
                 System.out.println("We ain't got none of those.");
             } else {
                 System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
@@ -164,9 +185,19 @@ public class Shop {
             return HORSE_COST;
         } else if (item.equals("boat")) {
             return BOAT_COST;
+        } else if (item.equalsIgnoreCase("sword")) {
+            return SWORD_COST;
         } else {
             return 0;
         }
+    }
+    private boolean validItem(String item) {
+        for (int i = 0; i < itemsList.length; i++) {
+            if (item.equalsIgnoreCase(itemsList[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

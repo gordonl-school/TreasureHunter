@@ -13,6 +13,8 @@ public class Hunter {
     private boolean goldNegative;
     private boolean isSearched;
     private boolean foundTreasure;
+    private boolean samuraiMode;
+    private boolean hasSword;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -40,6 +42,7 @@ public class Hunter {
         kit = new String[8]; // only 8 possible items can be stored in kit
         treasureCollection = new String[3]; // 3 possible items
         gold = startingGold;
+        samuraiMode = startingMode;
     }
 
 
@@ -54,6 +57,10 @@ public class Hunter {
 
     public boolean getIsFoundTreasure() {
         return foundTreasure;
+    }
+
+    public boolean getHasSword() {
+        return hasSword;
     }
 
     // Checks for treasure
@@ -85,8 +92,16 @@ public class Hunter {
      * @return true if the item is successfully bought.
      */
     public boolean buyItem(String item, int costOfItem) {
-        if (costOfItem == 0 || gold < costOfItem || hasItemInKit(item)) {
+        if (costOfItem == 0 || gold < costOfItem || hasItemInKit(item) || !item.equalsIgnoreCase("sword") && !hasSword) {
             return false;
+        }
+        if (samuraiMode && item.equalsIgnoreCase("sword")) {
+            hasSword = true;
+            addItem(item);
+            return true;
+        } else if (hasSword) {
+            addItem(item);
+            return true;
         }
         gold -= costOfItem;
         addItem(item);
@@ -238,6 +253,7 @@ public class Hunter {
         }
     }
 
+
     /**
      * Searches kit Array for the index of the specified value.
      *
@@ -308,5 +324,6 @@ public class Hunter {
         }
         return -1;
     }
+
 
 }
