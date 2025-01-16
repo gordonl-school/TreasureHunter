@@ -79,8 +79,7 @@ public class TreasureHunter {
             hunter = new Hunter(name, 40);
         } else if (hard.equalsIgnoreCase("s")){
             samuraiMode = true;
-            System.out.println("Made samuraiMode " + samuraiMode);
-            hunter = new Hunter(name, 25, samuraiMode);
+            hunter = new Hunter(name, 20, samuraiMode);
         } else {
             hunter = new Hunter(name, 20);
         }
