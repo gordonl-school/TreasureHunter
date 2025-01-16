@@ -68,15 +68,17 @@ public class Town {
         if (canLeaveTown) {
             String item = terrain.getNeededItem();
             printMessage = "You used your " + item + " to cross the " + terrain.getTerrainName() + ".";
-            if (checkItemBreak()) {
-                hunter.removeItemFromKit(item);
-                printMessage += "\nUnfortunately, you lost your " + item;
+            if (treasureHunter.getCurrentMode() != treasureHunter.getEasyMode()) {
+                if (checkItemBreak()) {
+                    hunter.removeItemFromKit(item);
+                    printMessage += "\nUnfortunately, you lost your " + item;
+                }
             }
             return true;
+        } else {
+            printMessage = "You can't leave town, " + hunter.getHunterName() + ". You don't have a " + terrain.getNeededItem() + ".";
+            return false;
         }
-
-        printMessage = "You can't leave town, " + hunter.getHunterName() + ". You don't have a " + terrain.getNeededItem() + ".";
-        return false;
     }
 
     /**
@@ -136,7 +138,7 @@ public class Town {
             if (hunter.hasItemInKit("shovel")) {
                 int chance = (int) (Math.random() * 2) + 1;
                 if (chance == 1) {
-                    int amountReceived = (int) (Math.random() * 19) + 1;
+                    int amountReceived = (int) (Math.random() * 20) + 1;
                     hunter.changeGold(amountReceived);
                     printMessage = "You dug up " + amountReceived + " gold!\n";
                     dug = true;
