@@ -17,6 +17,8 @@ public class Shop {
     private static final int BOAT_COST = 20;
     private static final int SWORD_COST = 0;
     private final String[] itemsList;
+    private Hunter hunter;
+    private int count;
 
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -31,15 +33,15 @@ public class Shop {
      *
      * @param markdown Percentage of markdown for selling items in decimal format.
      */
-    public Shop(double markdown, TreasureHunter th) {
+    public Shop(double markdown, TreasureHunter th, Hunter hunter) {
         treasureHunter = th;
+        this.hunter = hunter;
         this.markdown = markdown;
         customer = null; // customer is set in the enter method
         if (treasureHunter.getIsSamuraiMode()) {
             itemsList = new String[]{"water", "rope", "machete", "shovel", "boots", "horse", "boat", "sword"};
         } else {
             itemsList = new String[]{"water", "rope", "machete", "shovel", "boots", "horse", "boat"};
-
         }
 
     }
@@ -64,7 +66,6 @@ public class Shop {
 
             if (treasureHunter.getIsSamuraiMode() & validItem(item)) {
                 if (hunter.getHasSword()) {
-                    System.out.println(Colors.GREEN + "The sword intimidates the shopkeeper and he gives you the item freely" + Colors.RESET);
                     buyItem(item);
                 } else {
                     System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
@@ -129,7 +130,15 @@ public class Shop {
     public void buyItem(String item) {
         int costOfItem = checkMarketPrice(item, true);
         if (customer.buyItem(item, costOfItem)) {
-            System.out.println("Ye' got yerself a " + item + ". Come again soon.");
+            if (hunter.getHasSword()) {
+                count++;
+                System.out.println("Ye' got yerself a " + item + ". Come again soon.");
+                if (count > 1) {
+                    System.out.println(Colors.GREEN + "The sword intimidates the shopkeeper and he gives you the item freely" + Colors.RESET);
+                }
+            } else {
+                System.out.println("Ye' got yerself a " + item + ". Come again soon.");
+            }
         } else {
             System.out.println("Hmm, either you don't have enough gold or you've already got one of those!");
         }

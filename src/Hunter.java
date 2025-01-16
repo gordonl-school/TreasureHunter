@@ -92,14 +92,15 @@ public class Hunter {
      * @return true if the item is successfully bought.
      */
     public boolean buyItem(String item, int costOfItem) {
-        if (costOfItem == 0 || gold < costOfItem || hasItemInKit(item) || !item.equalsIgnoreCase("sword") && !hasSword) {
+        if (costOfItem == 0 & !item.equalsIgnoreCase("sword") || gold < costOfItem || hasItemInKit(item)) {
             return false;
         }
         if (samuraiMode && item.equalsIgnoreCase("sword")) {
             hasSword = true;
             addItem(item);
             return true;
-        } else if (hasSword) {
+        }
+        if (hasSword) {
             addItem(item);
             return true;
         }
