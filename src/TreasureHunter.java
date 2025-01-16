@@ -128,6 +128,7 @@ public class TreasureHunter {
     private void showMenu() {
         String choice = "";
         while (!choice.equals("x")) {
+
             System.out.println();
             System.out.println(currentTown.getLatestNews());
             System.out.println("***");
@@ -147,8 +148,7 @@ public class TreasureHunter {
 //            System.out.println("samuraiMode is currently " + samuraiMode);
             choice = SCANNER.nextLine().toLowerCase();
             processChoice(choice);
-            if (hunter.isGoldNegative()) {
-                System.out.println("GAME OVER!");
+            if (currentTown.getHasLost()) {
                 break;
             }
             if (hunter.getIsFoundTreasure()) {
