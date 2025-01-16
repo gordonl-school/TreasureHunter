@@ -63,7 +63,6 @@ public class Shop {
             System.out.print("What're you lookin' to buy? ");
             String item = SCANNER.nextLine().toLowerCase();
             int cost = checkMarketPrice(item, true);
-
             if (treasureHunter.getIsSamuraiMode() & validItem(item)) {
                 if (hunter.getHasSword()) {
                     buyItem(item);
@@ -115,7 +114,6 @@ public class Shop {
         str += "Boots: " + BOOTS_COST + " gold\n";
         str += "Horse: " + HORSE_COST + " gold\n";
         str += "Boat: " + BOAT_COST + " gold\n";
-        System.out.println(treasureHunter.getIsSamuraiMode());
         if (treasureHunter.getIsSamuraiMode()) {
             str += "Sword: " + SWORD_COST + " gold\n";
         }
@@ -131,10 +129,11 @@ public class Shop {
         int costOfItem = checkMarketPrice(item, true);
         if (customer.buyItem(item, costOfItem)) {
             if (hunter.getHasSword()) {
-                count++;
-                System.out.println("Ye' got yerself a " + item + ". Come again soon.");
-                if (count > 1) {
+                if (count >= 1) {
                     System.out.println(Colors.GREEN + "The sword intimidates the shopkeeper and he gives you the item freely" + Colors.RESET);
+                } else {
+                    count++;
+                    System.out.println("Ye' got yerself a " + item + ". Come again soon.");
                 }
             } else {
                 System.out.println("Ye' got yerself a " + item + ". Come again soon.");
