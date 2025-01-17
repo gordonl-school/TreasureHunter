@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Hunter Class<br /><br />
  * This class represents the treasure hunter character (the player) in the Treasure Hunt game.
@@ -15,6 +17,7 @@ public class Hunter {
     private boolean foundTreasure;
     private boolean samuraiMode;
     private boolean hasSword;
+    private OutputWindow window;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -22,7 +25,8 @@ public class Hunter {
      * @param hunterName The hunter's name.
      * @param startingGold The gold the hunter starts with.
      */
-    public Hunter(String hunterName, int startingGold) {
+    public Hunter(String hunterName, int startingGold, OutputWindow window) {
+        this.window = window;
         this.hunterName = hunterName;
         kit = new String[7]; // only 7 possible items can be stored in kit
         treasureCollection = new String[3]; // 3 possible items
@@ -37,7 +41,8 @@ public class Hunter {
             addItem("boat");
         }
     }
-    public Hunter(String hunterName, int startingGold, boolean startingMode) {
+    public Hunter(String hunterName, int startingGold, boolean startingMode, OutputWindow window) {
+        this.window = window;
         this.hunterName = hunterName;
         kit = new String[8]; // only 8 possible items can be stored in kit
         treasureCollection = new String[3]; // 3 possible items
@@ -241,13 +246,13 @@ public class Hunter {
         String chosenGem = chooseTreasure();
         isSearched = true;
         if (!hasItemInTreasure(chosenGem)) {
-            System.out.println("You found a " + chosenGem + "!");
+            window.addTextToWindow("\nYou found a " + chosenGem + "!", Color.green);
             if (!chosenGem.equalsIgnoreCase("Dust")) {
                 int idx = emptyPositionTreasure();
                 treasureCollection[idx] = chosenGem;
             }
         } else if (hasItemInTreasure(chosenGem)){
-            System.out.println("You already have " + chosenGem + " in your collection so you don't collect it.");
+            window.addTextToWindow("\nYou already have " + chosenGem + " in your collection so you don't collect it.", Color.red);
         }
         if (itemsInTreasureList() == 3) {
             foundTreasure = true;

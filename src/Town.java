@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * The Town Class is where it all happens.
  * The Town is designed to manage all the things a Hunter can do in town.
@@ -14,6 +16,8 @@ public class Town {
     private boolean dug;
     private TreasureHunter treasureHunter;
     private boolean hasLost;
+    private OutputWindow window;
+
 
     /**
      * The Town Constructor takes in a shop and the surrounding terrain, but leaves the hunter as null until one arrives.
@@ -21,7 +25,8 @@ public class Town {
      * @param shop The town's shoppe.
      * @param toughness The surrounding terrain.
      */
-    public Town(Shop shop, double toughness, TreasureHunter th) {
+    public Town(Shop shop, double toughness, TreasureHunter th, OutputWindow window) {
+        this.window = window;
         this.shop = shop;
         this.terrain = getNewTerrain();
 
