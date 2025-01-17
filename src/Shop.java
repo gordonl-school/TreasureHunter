@@ -130,7 +130,7 @@ public class Shop {
         if (customer.buyItem(item, costOfItem)) {
             if (hunter.getHasSword()) {
                 if (count >= 1) {
-                    System.out.println(Colors.GREEN + "The sword intimidates the shopkeeper and he gives you the item freely" + Colors.RESET);
+                    System.out.println("The sword intimidates the shopkeeper and he gives you the item freely");
                 } else {
                     count++;
                     System.out.println("Ye' got yerself a " + item + ". Come again soon.");
