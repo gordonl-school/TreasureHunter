@@ -54,18 +54,18 @@ public class TreasureHunter {
      * Creates a hunter object at the beginning of the game and populates the class member variable with it.
      */
     private void welcomePlayer() {
-        window.addTextToWindow("\nWelcome to TREASURE HUNTER!", Color.yellow);
-        System.out.println("Going hunting for the big treasure, eh?");
-        System.out.print("What's your name, Hunter? ");
+        window.addTextToWindow("Welcome to TREASURE HUNTER!", Color.black);
+        window.addTextToWindow("\nGoing hunting for the big treasure, eh?", Color.cyan);
+        window.addTextToWindow("\nWhat's your name, Hunter?: ", Color.cyan);
         String name = SCANNER.nextLine().toLowerCase();
         Player player = new Player(name, window); // pass window to Player as parameter
 
-
         // set hunter instance variable
-        hunter = new Hunter(name, 20);
+        hunter = new Hunter(name, 20, window);
 
-        System.out.print("Easy Mode(e), Normal Mode(n), or Hard Mode(h): ");
+        window.addTextToWindow("\nEasy Mode(e), Normal Mode(n), or Hard Mode(h): ", Color.cyan);
         String hard = SCANNER.nextLine().toLowerCase();
+        window.clear();
         if (hard.equals("h")) {
             hardMode = true;
             currentMode = hardMode;
@@ -77,14 +77,14 @@ public class TreasureHunter {
             currentMode = normalMode;
         }
         if (hard.equalsIgnoreCase("test")) {
-            hunter = new Hunter(name, 100);
+            hunter = new Hunter(name, 100, window);
         } else if (easyMode) {
-            hunter = new Hunter(name, 40);
+            hunter = new Hunter(name, 40, window);
         } else if (hard.equalsIgnoreCase("s")){
             samuraiMode = true;
-            hunter = new Hunter(name, 20, samuraiMode);
+            hunter = new Hunter(name, 20, samuraiMode, window);
         } else {
-            hunter = new Hunter(name, 20);
+            hunter = new Hunter(name, 20, window);
         }
     }
 
@@ -108,12 +108,12 @@ public class TreasureHunter {
         // note that we don't need to access the Shop object
         // outside of this method, so it isn't necessary to store it as an instance
         // variable; we can leave it as a local variable
-        Shop shop = new Shop(markdown, this, hunter);
+        Shop shop = new Shop(markdown, this, hunter, window);
 
         // creating the new Town -- which we need to store as an instance
         // variable in this class, since we need to access the Town
         // object in other methods of this class
-        currentTown = new Town(shop, toughness, this);
+        currentTown = new Town(shop, toughness, this, window);
 
         // calling the hunterArrives method, which takes the Hunter
         // as a parameter; note this also could have been done in the
@@ -130,33 +130,30 @@ public class TreasureHunter {
     private void showMenu() {
         String choice = "";
         while (!choice.equals("x")) {
-
-            System.out.println();
-            System.out.println(currentTown.getLatestNews());
-            System.out.println("***");
-            System.out.println(hunter.infoString());
-            System.out.println(hunter.infoTreasureList());
-            System.out.println(currentTown.infoString());
-            System.out.println("(B)uy something at the shop.");
-            System.out.println("(S)ell something at the shop.");
-            System.out.println("(E)xplore surrounding terrain.");
-            System.out.println("(M)ove on to a different town.");
-            System.out.println("(H)unt for treasure.");
-            System.out.println("(L)ook for trouble!");
-            System.out.println("(D)ig for gold.");
-            System.out.println("Give up the hunt and e(X)it.");
-            System.out.println();
-            System.out.print("What's your next move? ");
-//            System.out.println("samuraiMode is currently " + samuraiMode);
+            window.addTextToWindow(currentTown.getLatestNews(), Color.green);
+            window.addTextToWindow("\n***", Color.cyan);
+            window.addTextToWindow("\n" + hunter.infoString(), Color.blue);
+            window.addTextToWindow("\n" + hunter.infoTreasureList(), Color.magenta);
+            window.addTextToWindow("\n" + currentTown.infoString(), Color.green);
+            window.addTextToWindow("\n(B)uy something at the shop.", Color.black);
+            window.addTextToWindow("\n(S)ell something at the shop.", Color.black);
+            window.addTextToWindow("\n(E)xplore surrounding terrain.", Color.black);
+            window.addTextToWindow("\n(M)ove on to a different town.", Color.black);
+            window.addTextToWindow("\n(H)unt for treasure.", Color.black);
+            window.addTextToWindow("\n(L)ook for trouble!", Color.black);
+            window.addTextToWindow("\n(D)ig for gold.", Color.black);
+            window.addTextToWindow("\nGive up the hunt and e(X)it.", Color.black);
+            window.addTextToWindow("\nWhat's your next move?: ", Color.black);
             choice = SCANNER.nextLine().toLowerCase();
             processChoice(choice);
             if (currentTown.getHasLost()) {
                 break;
             }
             if (hunter.getIsFoundTreasure()) {
-                System.out.println("Congratulations, you have found the last of the three treasures, you win!");
+                window.addTextToWindow("\nCongratulations, you have found the last of the three treasures, you win!", Color.green);
                 break;
             }
+            window.clear();
         }
     }
 
@@ -166,26 +163,53 @@ public class TreasureHunter {
      */
     private void processChoice(String choice) {
         if (choice.equals("b") || choice.equals("s")) {
+            window.clear();
             currentTown.enterShop(choice);
+            window.addTextToWindow("\nPress enter to continue", Color.black);
+            SCANNER.nextLine();
+            window.clear();
         } else if (choice.equals("e")) {
-            System.out.println(currentTown.getTerrain().infoString());
+            window.addTextToWindow("\n"+ currentTown.getTerrain().infoString(), Color.green);
+//            window.addTextToWindow("\nPress enter to continue", Color.black);
+//            SCANNER.nextLine();
+//            window.clear();
         } else if (choice.equals("m")) {
             if (currentTown.leaveTown()) {
                 // This town is going away so print its news ahead of time.
-                System.out.println(currentTown.getLatestNews());
+                window.addTextToWindow("\n"+ currentTown.getLatestNews(), Color.green);
                 enterTown();
+                window.addTextToWindow("\nPress enter to continue", Color.black);
+                SCANNER.nextLine();
+                window.clear();
                 hunter.setIsSearched(false);
             }
         } else if (choice.equals("h")) {
             currentTown.huntForTreausre();
+            if (!hunter.getIsFoundTreasure()) {
+                window.addTextToWindow("\nPress enter to continue", Color.black);
+                SCANNER.nextLine();
+                window.clear();
+            }
         } else if (choice.equals("l")) {
             currentTown.lookForTrouble();
+            if (!hunter.isGoldNegative()) {
+                window.addTextToWindow("\nPress enter to continue", Color.black);
+                SCANNER.nextLine();
+                window.clear();
+            }
+            System.out.println("made back to treasurehunt");
         } else if (choice.equals("x")) {
-            System.out.println("Fare thee well, " + hunter.getHunterName() + "!");
+            window.addTextToWindow("\nFare thee well, " + hunter.getHunterName() + "!", Color.red);
         } else if (choice.equals("d")) {
             currentTown.digForGold();
+//            window.addTextToWindow("\nPress enter to continue", Color.black);
+//            SCANNER.nextLine();
+//            window.clear();
         } else {
-            System.out.println("Yikes! That's an invalid option! Try again.");
+            window.addTextToWindow("\nYikes! That's an invalid option! Try again.", Color.red);
+            window.addTextToWindow("\nPress enter to continue", Color.black);
+            SCANNER.nextLine();
+            window.clear();
         }
     }
 

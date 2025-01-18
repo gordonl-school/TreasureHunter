@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * The Town Class is where it all happens.
  * The Town is designed to manage all the things a Hunter can do in town.
@@ -14,6 +16,7 @@ public class Town {
     private boolean dug;
     private TreasureHunter treasureHunter;
     private boolean hasLost;
+    private OutputWindow window;
 
     /**
      * The Town Constructor takes in a shop and the surrounding terrain, but leaves the hunter as null until one arrives.
@@ -21,7 +24,8 @@ public class Town {
      * @param shop The town's shoppe.
      * @param toughness The surrounding terrain.
      */
-    public Town(Shop shop, double toughness, TreasureHunter th) {
+    public Town(Shop shop, double toughness, TreasureHunter th, OutputWindow window) {
+        this.window = window;
         this.shop = shop;
         this.terrain = getNewTerrain();
 
@@ -104,7 +108,7 @@ public class Town {
         if (!hunter.getIsSearched()) {
             hunter.addTreasure();
         } else {
-            System.out.println("You have already searched this town.");
+            window.addTextToWindow("\nYou have already searched this town.", Color.red);
         }
 
     }
@@ -116,35 +120,28 @@ public class Town {
             noTroubleChance = 0.33;
         }
         if (Math.random() > noTroubleChance) {
-//            printMessage = "You couldn't find any trouble";
-            System.out.println("You couldn't find any trouble");
+            window.addTextToWindow("\nYou couldn't find any trouble", Color.gray);
         } else {
-//            printMessage = Colors.RED + "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n" + Colors.RESET;
-            System.out.println(Colors.RED + "You want trouble, stranger! You got it!\nOof! Umph! Ow!\n" + Colors.RESET);
+            window.addTextToWindow("\nYou want trouble, stranger! You got it!\nOof! Umph! Ow!\n", Color.red);
             int goldDiff = (int) (Math.random() * 10) + 1;
             if (Math.random() > noTroubleChance || hunter.getHasSword()) {
                 if (hunter.getHasSword()) {
-//                    printMessage += Colors.GREEN + "The brawler, seeing your sword, realizes he picked a losing fight and gives you his gold" + Colors.RESET;
-                    System.out.println(Colors.GREEN + "The brawler, seeing your sword, realizes he picked a losing fight and gives you his gold" + Colors.RESET);
+                    window.addTextToWindow("\nThe brawler, seeing your sword, realizes he picked a losing fight and gives you his gold", Color.green);
                 } else {
-//                    printMessage += Colors.RED + "Okay, stranger! You proved yer mettle. Here, take my gold.";
-                    System.out.println(Colors.RED + "Okay, stranger! You proved yer mettle. Here, take my gold.");
+                    window.addTextToWindow("\nOkay, stranger! You proved yer mettle. Here, take my gold.", Color.green);
                 }
-//                printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + " gold." + Colors.RESET;
-                System.out.println(Colors.RED + "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + " gold." + Colors.RESET);
+                window.addTextToWindow("\nYou won the brawl and receive " + goldDiff + " gold.", Color.green);
                 printMessage = "You won a brawl";
                 hunter.changeGold(goldDiff);
             } else {
-//                printMessage += Colors.RED + "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
-//                printMessage += "\nYou lost the brawl and pay " + Colors.YELLOW + goldDiff + " gold." + Colors.RESET;
-                System.out.println(Colors.RED + "That'll teach you to go lookin' fer trouble in MY town! Now pay up!");
-                System.out.println(Colors.RED + "\nYou lost the brawl and pay " + Colors.YELLOW + goldDiff + " gold." + Colors.RESET);
+                window.addTextToWindow( "\nThat'll teach you to go lookin' fer trouble in MY town! Now pay up!", Color.red);
+                window.addTextToWindow("\nYou lost the brawl and pay " + goldDiff + " gold.", Color.red);
                 printMessage = "You lost a brawl";
                 hunter.changeGold(-goldDiff);
                 if (hunter.isGoldNegative()) {
-                    System.out.println(printMessage);
+                    window.addTextToWindow("\n" + printMessage, Color.red);
                     hasLost = true;
-                    System.out.println("Game Over!");
+                    window.addTextToWindow("\nGame Over!", Color.red);
                 }
             }
         }
