@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.sql.SQLOutput;
 import java.util.Scanner;
 
@@ -10,9 +11,9 @@ import java.util.Scanner;
  */
 
 public class TreasureHunter {
+    OutputWindow window = new OutputWindow(); // only want one OutputWindow object
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
-
     // instance variables
     private Town currentTown;
     private Hunter hunter;
@@ -53,10 +54,12 @@ public class TreasureHunter {
      * Creates a hunter object at the beginning of the game and populates the class member variable with it.
      */
     private void welcomePlayer() {
-        System.out.println("Welcome to TREASURE HUNTER!");
+        window.addTextToWindow("\nWelcome to TREASURE HUNTER!", Color.yellow);
         System.out.println("Going hunting for the big treasure, eh?");
         System.out.print("What's your name, Hunter? ");
         String name = SCANNER.nextLine().toLowerCase();
+        Player player = new Player(name, window); // pass window to Player as parameter
+
 
         // set hunter instance variable
         hunter = new Hunter(name, 20);
